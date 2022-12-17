@@ -25,12 +25,12 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     ""maps"": [
         {
             ""name"": ""Player"",
-            ""id"": ""8aedc88e-7682-42bb-96be-00edf516882c"",
+            ""id"": ""cbaa103f-0c48-4261-bf05-7bfd7ffb2955"",
             ""actions"": [
                 {
                     ""name"": ""Move"",
                     ""type"": ""Value"",
-                    ""id"": ""5b22986b-733d-43f4-8f8d-637bc619287e"",
+                    ""id"": ""058a68fa-e00f-4e5a-afab-f93019dad23d"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -39,70 +39,25 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""Look"",
                     ""type"": ""Value"",
-                    ""id"": ""77e42445-bbb4-4f9f-917f-217ee2061b02"",
+                    ""id"": ""fe1134a3-224f-45a9-b396-8d920e301a23"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""Attack1"",
+                    ""name"": ""Attack"",
                     ""type"": ""Button"",
-                    ""id"": ""fd1ba9b9-14dc-4bb3-89bb-808a936ac513"",
+                    ""id"": ""7b7f077b-54bc-4f7d-950b-9824a76b2d40"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Attack2"",
+                    ""name"": ""Roll"",
                     ""type"": ""Button"",
-                    ""id"": ""52ce97ab-b035-491f-bc2a-69d8c97875d6"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Skill1"",
-                    ""type"": ""Button"",
-                    ""id"": ""9b856557-6f86-4931-a5ac-a1369c173827"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Skill2"",
-                    ""type"": ""Button"",
-                    ""id"": ""c639ecd6-2367-48a6-9da3-0746d7b2bb89"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Skill3"",
-                    ""type"": ""Button"",
-                    ""id"": ""cb9a7bea-dfe4-40a4-b93f-fd81ec88b2f0"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Skill4"",
-                    ""type"": ""Button"",
-                    ""id"": ""e68edf1c-5fc5-4667-8f96-a4359b7fcc9b"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Change Weapon"",
-                    ""type"": ""Button"",
-                    ""id"": ""14eca7f9-dc0e-481f-b424-1ff15127dd62"",
+                    ""id"": ""500756c5-55e5-4626-9277-7a4044efbfe7"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -111,11 +66,29 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""Zoom"",
                     ""type"": ""Value"",
-                    ""id"": ""c958b001-0a98-4e3d-8d1c-70eaf5f2f411"",
-                    ""expectedControlType"": """",
+                    ""id"": ""54cc0df4-bf5f-4978-aa60-abb742328843"",
+                    ""expectedControlType"": ""Axis"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Jump"",
+                    ""type"": ""Button"",
+                    ""id"": ""dc0ce884-0020-4936-acda-cce010b89b00"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Skill"",
+                    ""type"": ""Button"",
+                    ""id"": ""5b81c402-69d5-4142-adbf-88e99ca97d49"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -291,7 +264,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
-                    ""action"": ""Attack1"",
+                    ""action"": ""Attack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -302,7 +275,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""Attack1"",
+                    ""action"": ""Attack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -313,7 +286,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Touch"",
-                    ""action"": ""Attack1"",
+                    ""action"": ""Attack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -324,7 +297,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Joystick"",
-                    ""action"": ""Attack1"",
+                    ""action"": ""Attack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -335,84 +308,51 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""XR"",
-                    ""action"": ""Attack1"",
+                    ""action"": ""Attack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""97220416-bc06-45f6-b28d-c3e157fadcfa"",
+                    ""id"": ""d978821b-a21c-40ae-8d02-33fde7d97ee2"",
                     ""path"": ""<Mouse>/rightButton"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""Attack2"",
+                    ""groups"": """",
+                    ""action"": ""Roll"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""c71a91c9-ddfd-44a1-a541-283fe802214c"",
-                    ""path"": ""<Keyboard>/1"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""Skill1"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""3e7aea70-6d96-439d-ad49-ba1f7eb9260b"",
-                    ""path"": ""<Keyboard>/2"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""Skill2"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""aa595968-bc77-41d3-ba43-d71102cbaab1"",
-                    ""path"": ""<Keyboard>/3"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""Skill3"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""442a709b-3cbe-472f-9a62-b189442617d6"",
-                    ""path"": ""<Keyboard>/4"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""Skill4"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""b41c95dd-94b4-495f-b521-4d19d5a79626"",
-                    ""path"": ""<Keyboard>/tab"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""Change Weapon"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""15c5989c-06d7-480a-bcde-74c5678b21ca"",
+                    ""id"": ""51a23eb2-ca73-4dd6-9852-a46845174c43"",
                     ""path"": ""<Mouse>/scroll/y"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse"",
+                    ""groups"": """",
                     ""action"": ""Zoom"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f7614851-a5ac-4d41-846d-7be365c0e249"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""dc07d364-47d2-49a9-86f8-5db9172e60db"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Skill"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -420,12 +360,12 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         },
         {
             ""name"": ""UI"",
-            ""id"": ""284c7286-5ce5-46a5-a96e-d3cc5f52c84e"",
+            ""id"": ""b40881ed-8bce-4118-b6fe-71d0d475f50c"",
             ""actions"": [
                 {
                     ""name"": ""Navigate"",
                     ""type"": ""PassThrough"",
-                    ""id"": ""306b640a-66dd-409c-87a6-5418c665f6a5"",
+                    ""id"": ""5f8e1a8b-8008-4b17-ac0f-d91d00444183"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -434,7 +374,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""Submit"",
                     ""type"": ""Button"",
-                    ""id"": ""72a7fb19-a7a2-4596-9399-69838d23dd5b"",
+                    ""id"": ""0be20bc3-b5ed-483a-a396-cb5081a896aa"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -443,7 +383,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""Cancel"",
                     ""type"": ""Button"",
-                    ""id"": ""5c5c8bde-244a-44b2-bbd2-739db44fa3c9"",
+                    ""id"": ""304950f9-083c-4f8a-a1d8-866da31ff898"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -452,7 +392,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""Point"",
                     ""type"": ""PassThrough"",
-                    ""id"": ""7b3f8561-1475-4985-81d1-c614fa5ec916"",
+                    ""id"": ""a274a354-ddc3-44ae-a007-766e338a398d"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -461,7 +401,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""Click"",
                     ""type"": ""PassThrough"",
-                    ""id"": ""cb2b3b5d-779a-490f-ab4f-5f3e4913b615"",
+                    ""id"": ""9268f3e3-d67a-4d19-85b5-0be912060fb9"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -470,7 +410,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""ScrollWheel"",
                     ""type"": ""PassThrough"",
-                    ""id"": ""6d228b8e-d0a2-4e26-ab6b-c89ca9ebcc11"",
+                    ""id"": ""ae0f6756-5d85-4c50-8a19-e427b57e4b24"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -479,7 +419,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""MiddleClick"",
                     ""type"": ""PassThrough"",
-                    ""id"": ""28d070f5-c467-4435-96d1-f220ba697eb1"",
+                    ""id"": ""cb4c8f28-021f-4fa7-b124-46248b382018"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -488,7 +428,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""RightClick"",
                     ""type"": ""PassThrough"",
-                    ""id"": ""b2fbf3f2-143e-4db3-8a31-58fafe39a293"",
+                    ""id"": ""68f64ef7-0f00-4b5c-8390-6161f157d97b"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -497,7 +437,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""TrackedDevicePosition"",
                     ""type"": ""PassThrough"",
-                    ""id"": ""f8661aaf-580b-4fa1-9bbc-7cda9d04d1c3"",
+                    ""id"": ""e62a1e88-dd3b-43c4-934c-f8c9a242db50"",
                     ""expectedControlType"": ""Vector3"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -506,7 +446,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""TrackedDeviceOrientation"",
                     ""type"": ""PassThrough"",
-                    ""id"": ""b3511511-a2a7-4d71-a8c2-581c8b42cf9d"",
+                    ""id"": ""b0854181-1234-4711-a0dd-685a21fefeb4"",
                     ""expectedControlType"": ""Quaternion"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -1002,14 +942,11 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
         m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
-        m_Player_Attack1 = m_Player.FindAction("Attack1", throwIfNotFound: true);
-        m_Player_Attack2 = m_Player.FindAction("Attack2", throwIfNotFound: true);
-        m_Player_Skill1 = m_Player.FindAction("Skill1", throwIfNotFound: true);
-        m_Player_Skill2 = m_Player.FindAction("Skill2", throwIfNotFound: true);
-        m_Player_Skill3 = m_Player.FindAction("Skill3", throwIfNotFound: true);
-        m_Player_Skill4 = m_Player.FindAction("Skill4", throwIfNotFound: true);
-        m_Player_ChangeWeapon = m_Player.FindAction("Change Weapon", throwIfNotFound: true);
+        m_Player_Attack = m_Player.FindAction("Attack", throwIfNotFound: true);
+        m_Player_Roll = m_Player.FindAction("Roll", throwIfNotFound: true);
         m_Player_Zoom = m_Player.FindAction("Zoom", throwIfNotFound: true);
+        m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
+        m_Player_Skill = m_Player.FindAction("Skill", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1083,28 +1020,22 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private IPlayerActions m_PlayerActionsCallbackInterface;
     private readonly InputAction m_Player_Move;
     private readonly InputAction m_Player_Look;
-    private readonly InputAction m_Player_Attack1;
-    private readonly InputAction m_Player_Attack2;
-    private readonly InputAction m_Player_Skill1;
-    private readonly InputAction m_Player_Skill2;
-    private readonly InputAction m_Player_Skill3;
-    private readonly InputAction m_Player_Skill4;
-    private readonly InputAction m_Player_ChangeWeapon;
+    private readonly InputAction m_Player_Attack;
+    private readonly InputAction m_Player_Roll;
     private readonly InputAction m_Player_Zoom;
+    private readonly InputAction m_Player_Jump;
+    private readonly InputAction m_Player_Skill;
     public struct PlayerActions
     {
         private @PlayerInput m_Wrapper;
         public PlayerActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Player_Move;
         public InputAction @Look => m_Wrapper.m_Player_Look;
-        public InputAction @Attack1 => m_Wrapper.m_Player_Attack1;
-        public InputAction @Attack2 => m_Wrapper.m_Player_Attack2;
-        public InputAction @Skill1 => m_Wrapper.m_Player_Skill1;
-        public InputAction @Skill2 => m_Wrapper.m_Player_Skill2;
-        public InputAction @Skill3 => m_Wrapper.m_Player_Skill3;
-        public InputAction @Skill4 => m_Wrapper.m_Player_Skill4;
-        public InputAction @ChangeWeapon => m_Wrapper.m_Player_ChangeWeapon;
+        public InputAction @Attack => m_Wrapper.m_Player_Attack;
+        public InputAction @Roll => m_Wrapper.m_Player_Roll;
         public InputAction @Zoom => m_Wrapper.m_Player_Zoom;
+        public InputAction @Jump => m_Wrapper.m_Player_Jump;
+        public InputAction @Skill => m_Wrapper.m_Player_Skill;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1120,30 +1051,21 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Look.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLook;
                 @Look.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLook;
                 @Look.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLook;
-                @Attack1.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack1;
-                @Attack1.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack1;
-                @Attack1.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack1;
-                @Attack2.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack2;
-                @Attack2.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack2;
-                @Attack2.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack2;
-                @Skill1.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSkill1;
-                @Skill1.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSkill1;
-                @Skill1.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSkill1;
-                @Skill2.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSkill2;
-                @Skill2.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSkill2;
-                @Skill2.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSkill2;
-                @Skill3.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSkill3;
-                @Skill3.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSkill3;
-                @Skill3.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSkill3;
-                @Skill4.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSkill4;
-                @Skill4.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSkill4;
-                @Skill4.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSkill4;
-                @ChangeWeapon.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnChangeWeapon;
-                @ChangeWeapon.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnChangeWeapon;
-                @ChangeWeapon.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnChangeWeapon;
+                @Attack.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack;
+                @Attack.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack;
+                @Attack.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack;
+                @Roll.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRoll;
+                @Roll.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRoll;
+                @Roll.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRoll;
                 @Zoom.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnZoom;
                 @Zoom.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnZoom;
                 @Zoom.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnZoom;
+                @Jump.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
+                @Jump.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
+                @Jump.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
+                @Skill.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSkill;
+                @Skill.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSkill;
+                @Skill.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSkill;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -1154,30 +1076,21 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Look.started += instance.OnLook;
                 @Look.performed += instance.OnLook;
                 @Look.canceled += instance.OnLook;
-                @Attack1.started += instance.OnAttack1;
-                @Attack1.performed += instance.OnAttack1;
-                @Attack1.canceled += instance.OnAttack1;
-                @Attack2.started += instance.OnAttack2;
-                @Attack2.performed += instance.OnAttack2;
-                @Attack2.canceled += instance.OnAttack2;
-                @Skill1.started += instance.OnSkill1;
-                @Skill1.performed += instance.OnSkill1;
-                @Skill1.canceled += instance.OnSkill1;
-                @Skill2.started += instance.OnSkill2;
-                @Skill2.performed += instance.OnSkill2;
-                @Skill2.canceled += instance.OnSkill2;
-                @Skill3.started += instance.OnSkill3;
-                @Skill3.performed += instance.OnSkill3;
-                @Skill3.canceled += instance.OnSkill3;
-                @Skill4.started += instance.OnSkill4;
-                @Skill4.performed += instance.OnSkill4;
-                @Skill4.canceled += instance.OnSkill4;
-                @ChangeWeapon.started += instance.OnChangeWeapon;
-                @ChangeWeapon.performed += instance.OnChangeWeapon;
-                @ChangeWeapon.canceled += instance.OnChangeWeapon;
+                @Attack.started += instance.OnAttack;
+                @Attack.performed += instance.OnAttack;
+                @Attack.canceled += instance.OnAttack;
+                @Roll.started += instance.OnRoll;
+                @Roll.performed += instance.OnRoll;
+                @Roll.canceled += instance.OnRoll;
                 @Zoom.started += instance.OnZoom;
                 @Zoom.performed += instance.OnZoom;
                 @Zoom.canceled += instance.OnZoom;
+                @Jump.started += instance.OnJump;
+                @Jump.performed += instance.OnJump;
+                @Jump.canceled += instance.OnJump;
+                @Skill.started += instance.OnSkill;
+                @Skill.performed += instance.OnSkill;
+                @Skill.canceled += instance.OnSkill;
             }
         }
     }
@@ -1336,14 +1249,11 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     {
         void OnMove(InputAction.CallbackContext context);
         void OnLook(InputAction.CallbackContext context);
-        void OnAttack1(InputAction.CallbackContext context);
-        void OnAttack2(InputAction.CallbackContext context);
-        void OnSkill1(InputAction.CallbackContext context);
-        void OnSkill2(InputAction.CallbackContext context);
-        void OnSkill3(InputAction.CallbackContext context);
-        void OnSkill4(InputAction.CallbackContext context);
-        void OnChangeWeapon(InputAction.CallbackContext context);
+        void OnAttack(InputAction.CallbackContext context);
+        void OnRoll(InputAction.CallbackContext context);
         void OnZoom(InputAction.CallbackContext context);
+        void OnJump(InputAction.CallbackContext context);
+        void OnSkill(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

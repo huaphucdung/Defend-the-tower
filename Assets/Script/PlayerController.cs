@@ -7,7 +7,7 @@ using Cinemachine;
 public class PlayerController : MonoBehaviour
 {   
     [Header("Reference")]
-    [SerializeField] private PlayerData playerData;
+    
     [SerializeField] private CinemachineVirtualCamera vcam;
     [SerializeField] private GameObject mainCamera;
     [SerializeField] private GameObject root;
@@ -20,12 +20,20 @@ public class PlayerController : MonoBehaviour
     [Range(0.0f, 0.3f)]
     [SerializeField] private float RotationSmoothTime = 0.12f;
 
+    [Header("Variable for movement")]
+    [SerializeField] private LayerMask GroundLayers;
+    [SerializeField] private float GroundedRadius;
+    [SerializeField] private float GroundedOffset;
+    [SerializeField] private float JumpHeight;
+    [SerializeField] private float Gravity;
+    
+
     [Header("Variable for target")]
     [SerializeField] private LayerMask targetLayer;
     [SerializeField] private float radiusScan;
 
-    [Header("Weapon")]
-    [SerializeField] private Weapon[] Weapons = new Weapon[2];
+    [Header("CharacterClass")]
+    [SerializeField] private CharacterClass Character;
 
     //Variable for player data
     private int _health;
@@ -33,22 +41,28 @@ public class PlayerController : MonoBehaviour
     private float _moveSpeed, _runSpeed;
     private int _sensitiveMouse;
     
-    //Variable for camera rotation and move
-    private CharacterController controler;  
+    //Variable for camera rotation
     private Cinemachine3rdPersonFollow _3rdPerson;
     private float _cameraYaw, _cameraPitch;
+    
+    //Variable for movement
+    private Vector3 spherePosition;
+    private CharacterController controler;  
     private float _targetRotation = 0.0f;
     private Vector3 targetDirection = Vector3.zero;
     private float _rotationVelocity;
     private float _targetSpeed;
+    private float _verticalVelocity;
+    private bool _grounded;
 
     //Variable for animation
     private Animator animator;
     private bool _hasAnimator;
     private float _animationBlend;
+    private bool _canAttack = true;
 
-    //Variable for weapon
-    private int _currentWeapon = 0;
+    //Variable for combo
+    private int _combo;
 
     //Variable for target
     private Transform _target;
@@ -62,23 +76,18 @@ public class PlayerController : MonoBehaviour
         animator = GetComponent<Animator>();
         _input = new PlayerInput();
         
-        _health = playerData._maxHealth;
-        _mana = playerData._maxMana;
-        _moveSpeed = playerData._speedMove;
-        _sensitiveMouse = playerData._sensitiveMouse;
+        _health = 0;
+        _mana = 0;
+        _moveSpeed = 10;
+        _sensitiveMouse = 10;
         
-        animator.runtimeAnimatorController= Resources.Load<RuntimeAnimatorController>(Weapons[_currentWeapon].dirAnimation);
+        animator.runtimeAnimatorController= Resources.Load<RuntimeAnimatorController>(Character.DirAnimation);
         
-        _input.Player.Skill1.performed += ctx => Skill1();
-        _input.Player.Skill2.performed += ctx => Skill2();
-        _input.Player.Skill3.performed += ctx => Skill3();
-        _input.Player.Skill4.performed += ctx => Skill4();
-
-        _input.Player.Attack1.performed += ctx => Attack1();
-        _input.Player.Attack2.performed += ctx => Attack2();
-
-        _input.Player.ChangeWeapon.performed += ctx => ChangeWeapon();
-
+        _input.Player.Attack.performed += ctx => Attack();
+        _input.Player.Skill.performed += ctx => Skill();
+        _input.Player.Roll.performed += ctx => Roll();
+        _input.Player.Jump.performed += ctx => Jump();
+        
         _input.Player.Zoom.performed += ctx => Zoom(ctx.ReadValue<float>());
     }
 
@@ -91,7 +100,9 @@ public class PlayerController : MonoBehaviour
     void Update() {
         Move();
         CameraRotation();
-        CheckTarget();
+        TargetCheck();
+        GroundedCheck();
+        ApllyGravity();
     }
 
     void OnEnable() {
@@ -102,6 +113,7 @@ public class PlayerController : MonoBehaviour
         _input.Disable();
     }
 
+    //Movement player
     void Move() {
         Vector2 move = _input.Player.Move.ReadValue<Vector2>();
 
@@ -118,13 +130,14 @@ public class PlayerController : MonoBehaviour
         else {
             _targetSpeed = 0.0f;
         }
-        controler.Move(targetDirection.normalized * (_targetSpeed * Time.deltaTime));
-        ;
+        controler.Move(targetDirection.normalized * (_targetSpeed * Time.deltaTime) 
+            + new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
         if(_hasAnimator) {
-            Weapons[_currentWeapon].DoAnimation(animator, "Speed", (_targetSpeed == _moveSpeed)? 1.0f : 0.0f);
+            Character.DoAnimation(animator, "Speed", (_targetSpeed == _moveSpeed)? 1.0f : 0.0f);
         }
     }
 
+    //Rotation camera arount root;
     void CameraRotation() {
         Vector2 rotate = _input.Player.Look.ReadValue<Vector2>();
         _cameraYaw += rotate.x * Time.deltaTime * _sensitiveMouse;
@@ -134,42 +147,76 @@ public class PlayerController : MonoBehaviour
 
         root.transform.rotation = Quaternion.Euler(_cameraPitch, _cameraYaw, 0.0f);
     }
-  
-    void Attack1() {
-        Debug.Log("Attack1");
+    
+    //Check player stand on ground not jump or fly
+    void GroundedCheck() {
+        spherePosition = new Vector3(transform.position.x, transform.position.y - GroundedOffset, transform.position.z); 
+        _grounded = Physics.CheckSphere(spherePosition, GroundedRadius, GroundLayers, QueryTriggerInteraction.Ignore);
+    }
+
+    //Apply gravity for player
+    void ApllyGravity() {
+        if(_grounded) {
+            if(_verticalVelocity < 0.0f)
+            {
+                _verticalVelocity = -2f;
+            }
+        }
+        _verticalVelocity += Gravity * Time.deltaTime;
     }
     
-    void Attack2() {
-        Debug.Log("Attack2");
+    //Do jump
+    void Jump() {
+        if(_grounded) {
+            _verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity); 
+            
+            if(_hasAnimator) {
+                Character.DoAnimation(animator, "Jump");
+            }
+        }
     }
 
-    void Skill1() {
-        Debug.Log("Skill1");
+    void Attack() {
+        if(_canAttack) {
+            Debug.Log(_combo);
+            Character.DoAttack(animator, _combo);
+            _canAttack = false;
+        }
+    }
+
+    //Start combo
+    public void StartCombo() {
+        _canAttack = true;
+        _combo = Character.Start_Combo(_combo);
     }
     
-    void Skill2() {
-        Debug.Log("Skill2");
+    //Finish combo animation
+    public void FinishComboAnim() {
+        _canAttack = true;
+        _combo = Character.Finish_Anim();
     }
 
-    void Skill3() {
-        Debug.Log("Skill3");
+    //Do skill
+    void Skill() {
+        Character.DoSkill(animator);
     }
 
-    void Skill4() {
-        Weapons[_currentWeapon].DoSkill4();
+    //Do roll 
+    void Roll() {
+        if(_grounded) {
+            Character.DoRoll(animator);
+        }
     }
 
-    void ChangeWeapon() {
-        Debug.Log("Tab");
-    }
-
+    //Zoom in or out camera
     void Zoom(float value) {
         float zoom = map(value,-240f,240f,-0.3f,0.3f);
         float newDistance = _3rdPerson.CameraDistance + zoom;
         _3rdPerson.CameraDistance = Mathf.Clamp(newDistance, minZoom, maxZoom);
     }
 
-    void CheckTarget() {
+    //Select Target
+    void TargetCheck() {
         //Scan Enemies in radius and get first enemy
         Collider[] enemies = Physics.OverlapSphere(transform.position,radiusScan, targetLayer);
         foreach(Collider enemy in enemies) {
@@ -188,6 +235,7 @@ public class PlayerController : MonoBehaviour
         return b1 + (s-a1)*(b2-b1)/(a2-a1);
     }
 
+    //Draw line or spehere to check
     void OnDrawGizmos() {
         Gizmos.color = Color.blue;
         Gizmos.DrawLine(transform.position, transform.position + transform.forward);
@@ -195,5 +243,7 @@ public class PlayerController : MonoBehaviour
         Gizmos.DrawLine(root.transform.position, root.transform.position + root.transform.forward);
         Gizmos.color = Color.white;
         Gizmos.DrawWireSphere(transform.position, radiusScan);
+        Gizmos.color = Color.black;
+        Gizmos.DrawWireSphere(spherePosition, GroundedRadius);
     }
 }
