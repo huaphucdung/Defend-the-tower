@@ -5,7 +5,6 @@ using Photon.Realtime;
 using Photon.Pun;
 using UnityEngine.UI;
 using TMPro;
-using UnityEngine.SceneManagement;
 
 public class CreateRoom : MonoBehaviourPunCallbacks
 {
@@ -13,7 +12,7 @@ public class CreateRoom : MonoBehaviourPunCallbacks
 
 
     public void OnClick_CreateRoom() {
-        if(!PhotonNetwork.IsConnected) return;
+        if(!PhotonNetwork.IsConnected && !PhotonNetwork.InLobby) return;
 
         //Create room
         if(room.text.Length >=1) {
@@ -22,6 +21,6 @@ public class CreateRoom : MonoBehaviourPunCallbacks
     }
 
     public override void OnJoinedRoom() {
-        SceneManager.LoadScene("Room");
+        PhotonNetwork.LoadLevel("Room");
     }
 }

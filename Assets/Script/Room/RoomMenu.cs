@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
-using UnityEngine.SceneManagement;
 using TMPro;
 
 public class RoomMenu : MonoBehaviourPunCallbacks
@@ -22,5 +21,14 @@ public class RoomMenu : MonoBehaviourPunCallbacks
 
     public override void OnPlayerLeftRoom(Player otherPlayer) {
         NumberPlayers.text= "Players: "+ PhotonNetwork.CurrentRoom.PlayerCount.ToString()+"/"+PhotonNetwork.CurrentRoom.MaxPlayers.ToString();
+    }
+
+    public void OnClick_LeaveRoom() {
+        PhotonNetwork.LeaveRoom();
+    }
+
+    public override void OnLeftRoom() 
+    {
+        PhotonNetwork.LoadLevel("Lobby");
     }
 }

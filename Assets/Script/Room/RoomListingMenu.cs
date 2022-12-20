@@ -12,9 +12,18 @@ public class RoomListingMenu : MonoBehaviourPunCallbacks
     
     private List<RoomItem> _roomList = new List<RoomItem>();
     
+    //Connect to lobby from leave Room 
+    public override void OnConnectedToMaster() {
+        if(!PhotonNetwork.InLobby)
+            PhotonNetwork.JoinLobby();
+    }
+
+    public override void OnJoinedLobby(){
+        Debug.Log("Join lobby "+ PhotonNetwork.InLobby);
+    }
+
     public override void OnRoomListUpdate(List<RoomInfo> roomList) {
         foreach(RoomInfo info in roomList) {
-            
             //Remove form rooms list
             if(info.RemovedFromList){
                 int index = _roomList.FindIndex(x => x.RoomInfo.Name == info.Name);
@@ -25,20 +34,38 @@ public class RoomListingMenu : MonoBehaviourPunCallbacks
             }
             //Add to rooms list
             else{
-                RoomItem room = Instantiate(_roomPrefabs, _content);
-                if(room != null) {
-                    room.SetRoomInfo(info);
-                    _roomList.Add(room);
+                //Check if has room same name but update number players will not add new and modify
+                int index = _roomList.FindIndex(x => x.RoomInfo.Name == info.Name);
+                if(index == -1) {
+                    RoomItem room = Instantiate(_roomPrefabs, _content);
+                    if(room != null) {
+                        room.SetRoomInfo(info);
+                        _roomList.Add(room);
+                    }
                 }
+                else {
+                    _roomList[index].SetRoomInfo(info);
+                }
+
             }
         }
     }
 
     public void JoinRoom(string _roomName) {
+        if(!PhotonNetwork.InLobby && !PhotonNetwork.IsConnected) return;
+        
         PhotonNetwork.JoinRoom(_roomName);
     }
 
-    public override void OnJoinedRoom() {
+    public override void OnJoinedRoom() {;
         SceneManager.LoadScene("Room");
+    }
+
+    public void OnClick_Disconnect() {
+        PhotonNetwork.Disconnect();
+    }
+
+    public override void OnDisconnected (DisconnectCause cause) {
+        SceneManager.LoadScene("MainMenu");
     }
 }

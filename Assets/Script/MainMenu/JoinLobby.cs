@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
-using UnityEngine.SceneManagement;
 using TMPro;
 
 public class JoinLobby : MonoBehaviourPunCallbacks
@@ -16,8 +15,10 @@ public class JoinLobby : MonoBehaviourPunCallbacks
     }
 
     public override void OnConnectedToMaster() {
-        SceneManager.LoadScene("Lobby");
         PhotonNetwork.JoinLobby();
-        Debug.Log(PhotonNetwork.LocalPlayer.NickName);
+    }
+
+    public override void OnJoinedLobby() {
+        PhotonNetwork.LoadLevel("Lobby");
     }
 }
