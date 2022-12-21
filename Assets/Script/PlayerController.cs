@@ -73,15 +73,24 @@ public class PlayerController : MonoBehaviour
     void Awake() {
         controler = GetComponent<CharacterController>();
         _3rdPerson = vcam.GetCinemachineComponent<Cinemachine3rdPersonFollow>();
-        animator = GetComponent<Animator>();
+         animator = GetComponent<Animator>();
+        //Instantiate model
+        Instantiate(Character.Model, transform);
+        //Add animation controller
+        animator.runtimeAnimatorController= Resources.Load<RuntimeAnimatorController>(Character.DirAnimation);
+        //Add animation avatar
+        animator.avatar = Character.Avatar;
+        
+        //Add new input system
         _input = new PlayerInput();
         
+        //Add 
         _health = 0;
         _mana = 0;
         _moveSpeed = 10;
         _sensitiveMouse = 10;
         
-        animator.runtimeAnimatorController= Resources.Load<RuntimeAnimatorController>(Character.DirAnimation);
+        
         
         _input.Player.Attack.performed += ctx => Attack();
         _input.Player.Skill.performed += ctx => Skill();

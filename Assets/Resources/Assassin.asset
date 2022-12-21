@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6ab40d972acf93429bf711e4e7c3b71, type: 3}
+  m_Name: Assassin
+  m_EditorClassIdentifier: 
+  Health: 200
+  Stamina: 130
+  PhysicDame: 100
+  MagicDame: 10
+  Armor: 10
+  NormalSpeed: 5
+  RunSpeed: 10
+  NumberCombo: 3
+  Model: {fileID: 134060900523896146, guid: b06e7623d33c6e6468aeabe56c3b3613, type: 3}
+  Avatar: {fileID: 9000000, guid: c98d517272749b3419a51e127079a951, type: 3}
+  DirAnimation: Animation/Assassin_Animation

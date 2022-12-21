@@ -21,6 +21,8 @@ public abstract class CharacterClass : ScriptableObject, ICharacterClass {
 
     public int NumberCombo;    
 
+    public GameObject Model;
+    public Avatar Avatar;
     public string DirAnimation;
     
     public abstract void DoAttack(Animator anim, int combo);

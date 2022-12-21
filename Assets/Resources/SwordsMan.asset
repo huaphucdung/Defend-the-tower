@@ -20,4 +20,6 @@ MonoBehaviour:
   NormalSpeed: 5
   RunSpeed: 10
   NumberCombo: 3
+  Model: {fileID: 4686787844495344656, guid: b2834104cfdf3aa4084ae082cb61697c, type: 3}
+  Avatar: {fileID: 9000000, guid: 3fc556ccb23cd4145a74199134160646, type: 3}
   DirAnimation: Animation/SwordsMan_Animation
