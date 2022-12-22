@@ -741,6 +741,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerName: {fileID: 641706435067061937}
+  ready: {fileID: 641706433829719640}
   leftArrowBtn: {fileID: 641706433841693377}
   rightArrowBtn: {fileID: 641706435671815527}
   rawImage: {fileID: 641706434179349592}

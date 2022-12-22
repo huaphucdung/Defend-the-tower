@@ -9,6 +9,7 @@ using Photon.Pun;
 public class PlayerItem : MonoBehaviourPunCallbacks
 {
     [SerializeField] private TMP_Text playerName;
+    [SerializeField] private GameObject ready;
     [SerializeField] private GameObject leftArrowBtn, rightArrowBtn;
     [SerializeField] private RawImage rawImage;
     [SerializeField] private RenderTexture[] rendetTextureList;
@@ -26,6 +27,20 @@ public class PlayerItem : MonoBehaviourPunCallbacks
     public void ApplyLocalChange() {
         leftArrowBtn.SetActive(true);
         rightArrowBtn.SetActive(true);
+    }
+
+    public bool ChangeState() {
+        if(!ready.activeSelf) {
+            leftArrowBtn.SetActive(false);
+            rightArrowBtn.SetActive(false);
+            PlayerProperties["IsReady"] = true;
+        } else {
+            leftArrowBtn.SetActive(true);
+            rightArrowBtn.SetActive(true);
+            PlayerProperties["IsReady"] = false;
+        }
+        PhotonNetwork.SetPlayerCustomProperties(PlayerProperties);
+        return (bool)PlayerProperties["IsReady"];
     }
 
     public void OnClick_LeftArrowBtn() {
@@ -56,12 +71,21 @@ public class PlayerItem : MonoBehaviourPunCallbacks
         else {
             PlayerProperties["CharacterClass"] = 0;
             rawImage.texture = rendetTextureList[0];
+        } 
+
+        if(player.CustomProperties.ContainsKey("IsReady")) {
+            ready.SetActive((bool)player.CustomProperties["IsReady"]);
+            playerName.gameObject.SetActive(!(bool)player.CustomProperties["IsReady"]);
+            PlayerProperties["IsReady"] = player.CustomProperties["IsReady"];
+        }
+        else {
+            PlayerProperties["IsReady"] = false;
         }
     }
 
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable hash) {
         if(targetPlayer == Player) {
             UpdatePlayerItem(targetPlayer);
-        }     
+        } 
     }
 }
