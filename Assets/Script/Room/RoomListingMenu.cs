@@ -46,7 +46,6 @@ public class RoomListingMenu : MonoBehaviourPunCallbacks
                 else {
                     _roomList[index].SetRoomInfo(info);
                 }
-
             }
         }
     }

@@ -16,10 +16,10 @@ public class CreateRoom : MonoBehaviourPunCallbacks
 
         //Create room
         if(room.text.Length >=1) {
-            PhotonNetwork.CreateRoom(room.text, new RoomOptions(){MaxPlayers = 4});            
+            PhotonNetwork.CreateRoom(room.text, new RoomOptions(){MaxPlayers = 4, BroadcastPropsChangeToAll = true});            
         }
     }
-
+    
     public override void OnJoinedRoom() {
         PhotonNetwork.LoadLevel("Room");
     }
