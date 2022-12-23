@@ -16,7 +16,7 @@ public abstract class CharacterClass : ScriptableObject, ICharacterClass {
     public int PhysicDame;
     public int MagicDame;
     public int Armor;
-    public int NormalSpeed;
+    public int WalkSpeed;
     public int RunSpeed;
 
     public int NumberCombo;    

@@ -17,7 +17,7 @@ MonoBehaviour:
   PhysicDame: 80
   MagicDame: 10
   Armor: 80
-  NormalSpeed: 5
+  WalkSpeed: 5
   RunSpeed: 10
   NumberCombo: 3
   Model: {fileID: 7884781638028949833, guid: b69d65ff403083c4aa63ed3989e57030, type: 3}

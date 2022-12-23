@@ -36,9 +36,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private CharacterClass Character;
 
     //Variable for player data
-    private int _health;
-    private int _mana;
-    private float _moveSpeed, _runSpeed;
+    private PlayerState currentState;
+    private int _health, _maxHealth;
+    private int _stamina;
+    private float _walkSpeed, _runSpeed, _currentSpped;
     private int _sensitiveMouse;
     
     //Variable for camera rotation
@@ -63,7 +64,7 @@ public class PlayerController : MonoBehaviour
 
     //Variable for combo
     private int _combo;
-
+    private bool hasEnemyOnScreen;
     //Variable for target
     private Transform _target;
 
@@ -73,7 +74,10 @@ public class PlayerController : MonoBehaviour
     void Awake() {
         controler = GetComponent<CharacterController>();
         _3rdPerson = vcam.GetCinemachineComponent<Cinemachine3rdPersonFollow>();
-         animator = GetComponent<Animator>();
+        animator = GetComponent<Animator>();
+
+        currentState = PlayerState.Idle;
+
         //Instantiate model
         Instantiate(Character.Model, transform);
         //Add animation controller
@@ -84,19 +88,18 @@ public class PlayerController : MonoBehaviour
         //Add new input system
         _input = new PlayerInput();
         
-        //Add 
-        _health = 0;
-        _mana = 0;
-        _moveSpeed = 10;
+        //Set data player  
+        SetDataPlayer(Character);
+
         _sensitiveMouse = 10;
-        
-        
-        
+                
         _input.Player.Attack.performed += ctx => Attack();
         _input.Player.Skill.performed += ctx => Skill();
         _input.Player.Roll.performed += ctx => Roll();
         _input.Player.Jump.performed += ctx => Jump();
-        
+        _input.Player.ChangeModeMove.performed += ctx => ChangeModeMove();
+
+
         _input.Player.Zoom.performed += ctx => Zoom(ctx.ReadValue<float>());
     }
 
@@ -107,7 +110,18 @@ public class PlayerController : MonoBehaviour
     }
 
     void Update() {
-        Move();
+        switch (currentState) {
+            case PlayerState.Dame: 
+            
+                break;
+            case PlayerState.Stun: 
+            
+                break;
+            default: 
+                Move();
+                break;
+        }
+        
         CameraRotation();
         TargetCheck();
         GroundedCheck();
@@ -134,15 +148,29 @@ public class PlayerController : MonoBehaviour
             transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
             
             targetDirection = Quaternion.Euler(0.0f, _targetRotation, 0.0f) * Vector3.forward;
-            _targetSpeed = _moveSpeed;
+            _targetSpeed = _currentSpped;
         }
         else {
             _targetSpeed = 0.0f;
         }
+
+        //Can not move if player not in Idle state
+        if(currentState != PlayerState.Idle) {
+            _targetSpeed = 0.0f;  
+        } 
+
+        //If rool speed = 10;
+        if(currentState == PlayerState.Roll) {
+            _targetSpeed = 5.0f; 
+
+            controler.Move(transform.forward * (_targetSpeed * Time.deltaTime));
+        }
+
         controler.Move(targetDirection.normalized * (_targetSpeed * Time.deltaTime) 
             + new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+
         if(_hasAnimator) {
-            Character.DoAnimation(animator, "Speed", (_targetSpeed == _moveSpeed)? 1.0f : 0.0f);
+            Character.DoAnimation(animator, "Speed", map(_targetSpeed,0,10,0,1));
         }
     }
 
@@ -176,9 +204,8 @@ public class PlayerController : MonoBehaviour
     
     //Do jump
     void Jump() {
-        if(_grounded) {
-            _verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity); 
-            
+        if(_grounded && currentState != PlayerState.Roll) {
+            _verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);
             if(_hasAnimator) {
                 Character.DoAnimation(animator, "Jump");
             }
@@ -186,10 +213,16 @@ public class PlayerController : MonoBehaviour
     }
 
     void Attack() {
-        if(_canAttack) {
-            Debug.Log(_combo);
+        if(_canAttack && (currentState == PlayerState.Idle || currentState == PlayerState.Attack)) {
+            //Auto rotaion look at first enemy
+            if(hasEnemyOnScreen && _target!= null && _input.Player.Move.ReadValue<Vector2>() == Vector2.zero) {
+                transform.LookAt(new Vector3(_target.position.x, transform.position.y, _target.position.z));
+            }
+
             Character.DoAttack(animator, _combo);
             _canAttack = false;
+
+            currentState = PlayerState.Attack;
         }
     }
 
@@ -203,6 +236,8 @@ public class PlayerController : MonoBehaviour
     public void FinishComboAnim() {
         _canAttack = true;
         _combo = Character.Finish_Anim();
+
+        currentState = PlayerState.Idle;
     }
 
     //Do skill
@@ -212,9 +247,15 @@ public class PlayerController : MonoBehaviour
 
     //Do roll 
     void Roll() {
-        if(_grounded) {
+        if(_grounded && currentState == PlayerState.Idle) {
             Character.DoRoll(animator);
+            currentState = PlayerState.Roll; 
         }
+        
+    }
+
+    public void FinishRollAnim() {
+        currentState = PlayerState.Idle;
     }
 
     //Zoom in or out camera
@@ -222,6 +263,10 @@ public class PlayerController : MonoBehaviour
         float zoom = map(value,-240f,240f,-0.3f,0.3f);
         float newDistance = _3rdPerson.CameraDistance + zoom;
         _3rdPerson.CameraDistance = Mathf.Clamp(newDistance, minZoom, maxZoom);
+    }
+
+    void ChangeModeMove() {
+        _currentSpped = (_currentSpped == _runSpeed)? _walkSpeed : _runSpeed;
     }
 
     //Select Target
@@ -236,12 +281,20 @@ public class PlayerController : MonoBehaviour
         }
 
         //Check target in view of camera and in player's target distance 
-        UI.ShowTargetCrosshair(mainCamera.GetComponent<Camera>(), transform, _target, radiusScan);
+        hasEnemyOnScreen = UI.ShowTargetCrosshair(mainCamera.GetComponent<Camera>(), transform, _target, radiusScan);
     }
 
     float map(float s, float a1, float a2, float b1, float b2)
     {
         return b1 + (s-a1)*(b2-b1)/(a2-a1);
+    }
+
+    void SetDataPlayer(CharacterClass Character){
+        this._health = this._maxHealth = Character.Health;
+        this._stamina = Character.Stamina;
+        this._walkSpeed = Character.WalkSpeed;
+        this._runSpeed = Character.RunSpeed;
+        _currentSpped = _runSpeed;
     }
 
     //Draw line or spehere to check

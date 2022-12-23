@@ -89,6 +89,15 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ChangeModeMove"",
+                    ""type"": ""Button"",
+                    ""id"": ""796d4713-0856-41b3-a87d-d444eabbeeda"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -353,6 +362,17 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Skill"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2619831d-4b6b-400b-b108-01cde9560a1a"",
+                    ""path"": ""<Keyboard>/leftCtrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""ChangeModeMove"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -947,6 +967,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_Player_Zoom = m_Player.FindAction("Zoom", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_Skill = m_Player.FindAction("Skill", throwIfNotFound: true);
+        m_Player_ChangeModeMove = m_Player.FindAction("ChangeModeMove", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1025,6 +1046,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Zoom;
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_Skill;
+    private readonly InputAction m_Player_ChangeModeMove;
     public struct PlayerActions
     {
         private @PlayerInput m_Wrapper;
@@ -1036,6 +1058,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         public InputAction @Zoom => m_Wrapper.m_Player_Zoom;
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputAction @Skill => m_Wrapper.m_Player_Skill;
+        public InputAction @ChangeModeMove => m_Wrapper.m_Player_ChangeModeMove;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1066,6 +1089,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Skill.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSkill;
                 @Skill.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSkill;
                 @Skill.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSkill;
+                @ChangeModeMove.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnChangeModeMove;
+                @ChangeModeMove.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnChangeModeMove;
+                @ChangeModeMove.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnChangeModeMove;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -1091,6 +1117,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Skill.started += instance.OnSkill;
                 @Skill.performed += instance.OnSkill;
                 @Skill.canceled += instance.OnSkill;
+                @ChangeModeMove.started += instance.OnChangeModeMove;
+                @ChangeModeMove.performed += instance.OnChangeModeMove;
+                @ChangeModeMove.canceled += instance.OnChangeModeMove;
             }
         }
     }
@@ -1254,6 +1283,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         void OnZoom(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnSkill(InputAction.CallbackContext context);
+        void OnChangeModeMove(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

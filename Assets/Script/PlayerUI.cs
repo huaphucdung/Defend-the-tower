@@ -20,12 +20,8 @@ public class PlayerUI : MonoBehaviour
         defaulSize = _imageTarget.rectTransform.sizeDelta;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-    }
 
-    public void ShowTargetCrosshair(Camera mainCamera,Transform playerTran, Transform _target, float radiusScan) {      
+    public bool ShowTargetCrosshair(Camera mainCamera,Transform playerTran, Transform _target, float radiusScan) {      
         //Check target in view of camera and in player's target distance 
         if(_target != null && Vector3.Distance(playerTran.position, _target.position) <= radiusScan) {
             Vector3 _targetPos = mainCamera.WorldToViewportPoint(_target.position);
@@ -34,9 +30,10 @@ public class PlayerUI : MonoBehaviour
                 targetCrosshair.SetActive(true);
                 _imageTarget.rectTransform.sizeDelta = defaulSize - new Vector2(5,5) * _targetPos.z;
                 targetCrosshair.transform.position = mainCamera.WorldToScreenPoint(_target.position);                    
-                return;
+                return true;
             }      
         }
         targetCrosshair.SetActive(false);
+        return false;
     }
 }
