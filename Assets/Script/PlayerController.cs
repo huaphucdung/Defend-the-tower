@@ -204,7 +204,7 @@ public class PlayerController : MonoBehaviour
     
     //Do jump
     void Jump() {
-        if(_grounded && currentState != PlayerState.Roll) {
+        if(_grounded && currentState == PlayerState.Idle) {
             _verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);
             if(_hasAnimator) {
                 Character.DoAnimation(animator, "Jump");
@@ -213,7 +213,7 @@ public class PlayerController : MonoBehaviour
     }
 
     void Attack() {
-        if(_canAttack && (currentState == PlayerState.Idle || currentState == PlayerState.Attack)) {
+        if(_grounded && _canAttack && (currentState == PlayerState.Idle || currentState == PlayerState.Attack)) {
             //Auto rotaion look at first enemy
             if(hasEnemyOnScreen && _target!= null && _input.Player.Move.ReadValue<Vector2>() == Vector2.zero) {
                 transform.LookAt(new Vector3(_target.position.x, transform.position.y, _target.position.z));
@@ -242,7 +242,8 @@ public class PlayerController : MonoBehaviour
 
     //Do skill
     void Skill() {
-        Character.DoSkill(animator);
+        if(_grounded)
+            Character.DoSkill(animator);
     }
 
     //Do roll 
