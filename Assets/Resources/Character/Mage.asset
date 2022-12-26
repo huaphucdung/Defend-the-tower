@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56a1e127be70f8b4a8bd4b819ab42a32, type: 3}
+  m_Name: Mage
+  m_EditorClassIdentifier: 
+  type: 1
+  Health: 400
+  Stamina: 80
+  PhysicDame: 20
+  MagicDame: 100
+  Armor: 30
+  WalkSpeed: 5
+  RunSpeed: 10
+  NumberCombo: 2
+  TimeResetSkill: 6
+  Model: {fileID: 7098836526402186448, guid: 5e7602a6d04caa8438164cc156e4f0ea, type: 3}
+  Avatar: {fileID: 9000000, guid: ec62efa0adeb0b143a2ed28196347157, type: 3}
+  DirAnimation: Animation/Mage_Animation
+  particleAttack: {fileID: 11400000, guid: a2d1b02f8ac5e9a4dadae4319b15d681, type: 2}
+  particleSkill: {fileID: 11400000, guid: 32ce7c18b61e2ad4b91572a9b28bb4e4, type: 2}

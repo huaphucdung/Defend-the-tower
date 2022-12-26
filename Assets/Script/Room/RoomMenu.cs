@@ -78,7 +78,7 @@ public class RoomMenu : MonoBehaviourPunCallbacks
             }
         }
         if(count == PhotonNetwork.CurrentRoom.PlayerCount) {
-            Debug.Log("Can start game");
+            PhotonNetwork.LoadLevel("GamePlay");
         }
     }
 

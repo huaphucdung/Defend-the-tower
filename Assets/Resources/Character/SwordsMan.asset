@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84819e8bdd628174fb1260cf515902d4, type: 3}
+  m_Name: SwordsMan
+  m_EditorClassIdentifier: 
+  type: 0
+  Health: 300
+  Stamina: 100
+  PhysicDame: 100
+  MagicDame: 20
+  Armor: 50
+  WalkSpeed: 5
+  RunSpeed: 10
+  NumberCombo: 3
+  TimeResetSkill: 2
+  Model: {fileID: 4686787844495344656, guid: b2834104cfdf3aa4084ae082cb61697c, type: 3}
+  Avatar: {fileID: 9000000, guid: 3fc556ccb23cd4145a74199134160646, type: 3}
+  DirAnimation: Animation/SwordsMan_Animation
+  particle: {fileID: 11400000, guid: d94473484874c2c48b80087a6ff75280, type: 2}

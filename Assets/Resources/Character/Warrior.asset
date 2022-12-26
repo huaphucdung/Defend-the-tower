@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38d042d269f0f40439c44287af16b2ef, type: 3}
+  m_Name: Warrior
+  m_EditorClassIdentifier: 
+  type: 0
+  Health: 500
+  Stamina: 50
+  PhysicDame: 80
+  MagicDame: 10
+  Armor: 80
+  WalkSpeed: 5
+  RunSpeed: 10
+  NumberCombo: 3
+  TimeResetSkill: 2
+  Model: {fileID: 7884781638028949833, guid: b69d65ff403083c4aa63ed3989e57030, type: 3}
+  Avatar: {fileID: 9000000, guid: 9c3e89eb338eabe47a0e06a282819279, type: 3}
+  DirAnimation: Animation/Warrior_Animation
+  particle: {fileID: 11400000, guid: bb3ee437153a0ec4b952725efcdc3db3, type: 2}

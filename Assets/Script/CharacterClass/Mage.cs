@@ -5,15 +5,21 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Mage", menuName = "Character Class/Mage")]
 public class Mage : CharacterClass
 {
-    public override void DoAttack(Animator anim, int combo) {
-        DoAnimation(anim, "Attack"+combo);
+    public GameObjectPool particleAttack;
+    public GameObjectPool particleSkill;
+
+    public override void DoAttack(PlayerController player, Animator anim, int combo) {
+        Transform trans = player.gameObject.transform;
+        int dame = MagicDame;
+        if(combo == 0) {
+            dame -= 10;
+        }
+        particleAttack.SpawnObject(trans.position + new Vector3(0f, 0.5f, 0f) + trans.forward / 2 , Quaternion.LookRotation(trans.forward), dame);
     }
     
-    public override void DoSkill(Animator anim) {
-        DoAnimation(anim, "Skill");
-    }
-
-    public override void DoRoll(Animator anim) {
-        DoAnimation(anim, "Roll");
+    public override float DoSkill(PlayerController player, Animator anim) {
+        Transform trans = player.gameObject.transform;
+        particleSkill.SpawnObject(trans.position + new Vector3(0f, 2f, 0f), Quaternion.AngleAxis(30f, trans.right) * Quaternion.LookRotation(trans.forward), MagicDame * 2); 
+        return TimeResetSkill;
     }
 }

@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Cinemachine;
+using Photon.Pun; 
 
 public class PlayerController : MonoBehaviour
 {   
     [Header("Reference")]
-    
     [SerializeField] private CinemachineVirtualCamera vcam;
     [SerializeField] private GameObject mainCamera;
     [SerializeField] private GameObject root;
@@ -32,10 +32,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private LayerMask targetLayer;
     [SerializeField] private float radiusScan;
 
+    public LayerMask TargetLayer => targetLayer;
+
     [Header("CharacterClass")]
     [SerializeField] private CharacterClass Character;
 
     //Variable for player data
+    private string _name;
+    public string Name => _name;
     private PlayerState currentState;
     private int _health, _maxHealth;
     private int _stamina;
@@ -61,22 +65,30 @@ public class PlayerController : MonoBehaviour
     private bool _hasAnimator;
     private float _animationBlend;
     private bool _canAttack = true;
+    private bool _canSkill = true;
 
     //Variable for combo
     private int _combo;
-    private bool hasEnemyOnScreen;
+    private bool _hasEnemyOnScreen;
+
+    //Variable for skill
+    private float _resetSkill;
+    
     //Variable for target
     private Transform _target;
 
     //New input system
     private PlayerInput _input;
 
+    //Photon view
+    private PhotonView view;
+
     void Awake() {
         controler = GetComponent<CharacterController>();
         _3rdPerson = vcam.GetCinemachineComponent<Cinemachine3rdPersonFollow>();
         animator = GetComponent<Animator>();
-
-        currentState = PlayerState.Idle;
+        view = GetComponent<PhotonView>();
+        SetState(PlayerState.Idle);
 
         //Instantiate model
         Instantiate(Character.Model, transform);
@@ -92,15 +104,20 @@ public class PlayerController : MonoBehaviour
         SetDataPlayer(Character);
 
         _sensitiveMouse = 10;
-                
-        _input.Player.Attack.performed += ctx => Attack();
-        _input.Player.Skill.performed += ctx => Skill();
-        _input.Player.Roll.performed += ctx => Roll();
-        _input.Player.Jump.performed += ctx => Jump();
-        _input.Player.ChangeModeMove.performed += ctx => ChangeModeMove();
+        if(!view.IsMine) {
+            mainCamera.SetActive(false);
+            vcam.gameObject.SetActive(false);
+        }
 
+        if(view.IsMine) {
+            _input.Player.Attack.performed += ctx => Attack();
+            _input.Player.Skill.performed += ctx => Skill();
+            _input.Player.Roll.performed += ctx => Roll();
+            _input.Player.Jump.performed += ctx => Jump();
+            _input.Player.ChangeModeMove.performed += ctx => ChangeModeMove();
 
-        _input.Player.Zoom.performed += ctx => Zoom(ctx.ReadValue<float>());
+            _input.Player.Zoom.performed += ctx => Zoom(ctx.ReadValue<float>());
+        }
     }
 
     void Start() {
@@ -118,11 +135,13 @@ public class PlayerController : MonoBehaviour
             
                 break;
             default: 
-                Move();
+                if(view.IsMine) {
+                    Move();
+                    CameraRotation();
+                }
                 break;
         }
         
-        CameraRotation();
         TargetCheck();
         GroundedCheck();
         ApllyGravity();
@@ -170,7 +189,7 @@ public class PlayerController : MonoBehaviour
             + new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
 
         if(_hasAnimator) {
-            Character.DoAnimation(animator, "Speed", map(_targetSpeed,0,10,0,1));
+            Character.DoAnimation(this, animator, "Speed", map(_targetSpeed,0,10,0,1));
         }
     }
 
@@ -207,22 +226,29 @@ public class PlayerController : MonoBehaviour
         if(_grounded && currentState == PlayerState.Idle) {
             _verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);
             if(_hasAnimator) {
-                Character.DoAnimation(animator, "Jump");
+                Character.DoAnimation(this, animator, "Jump");
             }
         }
     }
 
     void Attack() {
         if(_grounded && _canAttack && (currentState == PlayerState.Idle || currentState == PlayerState.Attack)) {
-            //Auto rotaion look at first enemy
-            if(hasEnemyOnScreen && _target!= null && _input.Player.Move.ReadValue<Vector2>() == Vector2.zero) {
-                transform.LookAt(new Vector3(_target.position.x, transform.position.y, _target.position.z));
-            }
-
-            Character.DoAttack(animator, _combo);
+            AutoRotationToEnemy();
+            Character.DoAnimation(this, animator, "Attack"+_combo);
+            
             _canAttack = false;
+            SetState(PlayerState.Attack);
+        }
+    }
 
-            currentState = PlayerState.Attack;
+    public void DoAttack() {
+        Character.DoAttack(this, animator, _combo);
+    }
+
+    //Auto rotaion look at first enemy
+    void AutoRotationToEnemy() {
+        if(_hasEnemyOnScreen && _target!= null && _input.Player.Move.ReadValue<Vector2>() == Vector2.zero) {
+            transform.LookAt(new Vector3(_target.position.x, transform.position.y, _target.position.z));
         }
     }
 
@@ -236,27 +262,34 @@ public class PlayerController : MonoBehaviour
     public void FinishComboAnim() {
         _canAttack = true;
         _combo = Character.Finish_Anim();
-
-        currentState = PlayerState.Idle;
+        SetState(PlayerState.Idle);
+        _canSkill = true;
     }
 
     //Do skill
     void Skill() {
-        if(_grounded)
-            Character.DoSkill(animator);
+        if(_grounded && _canSkill &&_resetSkill < Time.time) {
+            AutoRotationToEnemy();
+            Character.DoAnimation(this, animator, "Skill");
+            _canSkill = false;
+        }
+    }
+
+    public void DoSkill() {
+        _resetSkill= Time.time + Character.DoSkill(this, animator);
     }
 
     //Do roll 
     void Roll() {
         if(_grounded && currentState == PlayerState.Idle) {
-            Character.DoRoll(animator);
-            currentState = PlayerState.Roll; 
+            Character.DoRoll(this, animator);
+            SetState(PlayerState.Roll);
         }
         
     }
 
     public void FinishRollAnim() {
-        currentState = PlayerState.Idle;
+        SetState(PlayerState.Idle);
     }
 
     //Zoom in or out camera
@@ -282,12 +315,16 @@ public class PlayerController : MonoBehaviour
         }
 
         //Check target in view of camera and in player's target distance 
-        hasEnemyOnScreen = UI.ShowTargetCrosshair(mainCamera.GetComponent<Camera>(), transform, _target, radiusScan);
+        _hasEnemyOnScreen = UI.ShowTargetCrosshair(mainCamera.GetComponent<Camera>(), transform, _target, radiusScan);
     }
 
     float map(float s, float a1, float a2, float b1, float b2)
     {
         return b1 + (s-a1)*(b2-b1)/(a2-a1);
+    }
+
+    public void SetName(string newName) {
+        _name = newName;
     }
 
     void SetDataPlayer(CharacterClass Character){
@@ -296,6 +333,16 @@ public class PlayerController : MonoBehaviour
         this._walkSpeed = Character.WalkSpeed;
         this._runSpeed = Character.RunSpeed;
         _currentSpped = _runSpeed;
+
+        _resetSkill = Time.time;
+    }
+
+    public void SetState(PlayerState newState) {
+        currentState = newState;
+    }
+
+    public void SetCharacterClass(CharacterClass newCharacter) {
+        Character = newCharacter;
     }
 
     //Draw line or spehere to check
@@ -308,5 +355,8 @@ public class PlayerController : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, radiusScan);
         Gizmos.color = Color.black;
         Gizmos.DrawWireSphere(spherePosition, GroundedRadius);
+
+        Gizmos.color = Color.green;
+        Gizmos.DrawLine(transform.position + new Vector3(0, 0.5f, 0f) + transform.forward * 0.5f, transform.position + new Vector3(0f, 0.5f, 0f) + transform.forward * 2);
     }
 }
