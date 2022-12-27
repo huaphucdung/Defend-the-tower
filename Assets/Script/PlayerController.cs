@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject mainCamera;
     [SerializeField] private GameObject root;
     [SerializeField] private PlayerUI UI;
+    [SerializeField] private ListCharacter ListCharacter;
 
     [Header("Variable for rotation camera")]
     [SerializeField] private float BottomClamp, TopClamp;
@@ -34,8 +35,8 @@ public class PlayerController : MonoBehaviour
 
     public LayerMask TargetLayer => targetLayer;
 
-    [Header("CharacterClass")]
-    [SerializeField] private CharacterClass Character;
+    //Variable character class
+    private CharacterClass Character;
 
     //Variable for player data
     private string _name;
@@ -89,26 +90,30 @@ public class PlayerController : MonoBehaviour
         animator = GetComponent<Animator>();
         view = GetComponent<PhotonView>();
         SetState(PlayerState.Idle);
-
+        
+        //Get character class
+        Character = ListCharacter.GetCharacter((int)view.Owner.CustomProperties["CharacterClass"]);
         //Instantiate model
         Instantiate(Character.Model, transform);
+        //Set player Data
+        SetDataPlayer(Character);
         //Add animation controller
         animator.runtimeAnimatorController= Resources.Load<RuntimeAnimatorController>(Character.DirAnimation);
         //Add animation avatar
         animator.avatar = Character.Avatar;
-        
+
         //Add new input system
         _input = new PlayerInput();
         
         //Set data player  
-        SetDataPlayer(Character);
-
         _sensitiveMouse = 10;
+        
         if(!view.IsMine) {
             mainCamera.SetActive(false);
             vcam.gameObject.SetActive(false);
         }
 
+        
         if(view.IsMine) {
             _input.Player.Attack.performed += ctx => Attack();
             _input.Player.Skill.performed += ctx => Skill();
@@ -339,10 +344,6 @@ public class PlayerController : MonoBehaviour
 
     public void SetState(PlayerState newState) {
         currentState = newState;
-    }
-
-    public void SetCharacterClass(CharacterClass newCharacter) {
-        Character = newCharacter;
     }
 
     //Draw line or spehere to check
