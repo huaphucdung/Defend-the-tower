@@ -152,6 +152,13 @@ public class PlayerController : MonoBehaviour
         ApllyGravity();
     }
 
+    void FixedUpdate() {
+        if(view.IsMine) {
+            //Move();
+            //CameraRotation();
+        }
+    }
+
     void OnEnable() {
         _input.Enable();
     }
