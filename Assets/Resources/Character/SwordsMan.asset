@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: SwordsMan
   m_EditorClassIdentifier: 
   type: 0
-  Health: 300
+  Health: 400
   Stamina: 100
   PhysicDame: 100
   MagicDame: 20

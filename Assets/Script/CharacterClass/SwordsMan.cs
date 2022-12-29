@@ -26,7 +26,7 @@ class SwordsMan : CharacterClass {
         }
         //Only work for Melee character
         if(combo !=2 ) {
-            Collider[] hitColliders = Physics.OverlapSphere(trans.position + new Vector3(0f, 0.5f, 0f) + trans.forward / 2 , 1, player.TargetLayer);
+            Collider[] hitColliders = Physics.OverlapSphere(trans.position + new Vector3(0f, 0.5f, 0f) + trans.forward / 2 , 1.5f, player.TargetLayer);
             foreach(Collider enemy in hitColliders) {
                 Debug.Log("Dame:" + dame);
             }

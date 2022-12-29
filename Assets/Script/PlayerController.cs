@@ -11,7 +11,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private CinemachineVirtualCamera vcam;
     [SerializeField] private GameObject mainCamera;
     [SerializeField] private GameObject root;
-    [SerializeField] private PlayerUI UI;
     [SerializeField] private ListCharacter ListCharacter;
 
     [Header("Variable for rotation camera")]
@@ -43,6 +42,10 @@ public class PlayerController : MonoBehaviour
     public string Name => _name;
     private PlayerState currentState;
     private int _health, _maxHealth;
+    
+    public int Health => _health;
+    public int MaxHealth => _maxHealth;
+
     private int _stamina;
     private float _walkSpeed, _runSpeed, _currentSpped;
     private int _sensitiveMouse;
@@ -74,8 +77,10 @@ public class PlayerController : MonoBehaviour
 
     //Variable for skill
     private float _resetSkill;
-    
+    public float ResetSkill => _resetSkill;
+
     //Variable for target
+    private PlayerUI UI;
     private Transform _target;
 
     //New input system
@@ -112,9 +117,10 @@ public class PlayerController : MonoBehaviour
             mainCamera.SetActive(false);
             vcam.gameObject.SetActive(false);
         }
-
-        
+    
         if(view.IsMine) {
+            UI = FindObjectOfType<PlayerUI>();
+
             _input.Player.Attack.performed += ctx => Attack();
             _input.Player.Skill.performed += ctx => Skill();
             _input.Player.Roll.performed += ctx => Roll();
@@ -123,6 +129,8 @@ public class PlayerController : MonoBehaviour
 
             _input.Player.Zoom.performed += ctx => Zoom(ctx.ReadValue<float>());
         }
+
+        
     }
 
     void Start() {
@@ -146,17 +154,11 @@ public class PlayerController : MonoBehaviour
                 }
                 break;
         }
-        
-        TargetCheck();
+        if(view.IsMine) {
+            TargetCheck();
+        }
         GroundedCheck();
         ApllyGravity();
-    }
-
-    void FixedUpdate() {
-        if(view.IsMine) {
-            //Move();
-            //CameraRotation();
-        }
     }
 
     void OnEnable() {
@@ -351,6 +353,10 @@ public class PlayerController : MonoBehaviour
 
     public void SetState(PlayerState newState) {
         currentState = newState;
+    }
+
+    public CharacterClass GetCharacterClass() {
+        return Character;
     }
 
     //Draw line or spehere to check

@@ -2,24 +2,57 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
+using Photon.Pun;
 
 public class PlayerUI : MonoBehaviour
 {
     [Header("Reference")]
     [SerializeField] private GameObject targetCrosshair;
+    [SerializeField] private Slider HealthBarSlider;
+    [SerializeField] private TMP_Text HealthBarText;
+
+    [SerializeField] private Image Skill;
 
     //Variable for target
     private Transform _target;
     private Vector2 defaulSize;
     private Image _imageTarget;
+    private PlayerController PC;
+    private CharacterClass CharacterInfo;
     // Start is called before the first frame update
     void Start()
     {
         _imageTarget = targetCrosshair.GetComponent<Image>(); //.rectTransform.sizeDelta = new Vector2(100, 200);
         targetCrosshair.SetActive(false);
         defaulSize = _imageTarget.rectTransform.sizeDelta;
+
+        //Get PV of character which player can control
+        PhotonView[] list_PV = FindObjectsOfType<PhotonView>();
+        foreach(PhotonView view in list_PV) {
+            if(view.IsMine) {
+                PC = view.gameObject.GetComponent<PlayerController>();
+                break;
+            }
+        }
+        
+        HealthBarSlider.maxValue = PC.MaxHealth;
+        CharacterInfo = PC.GetCharacterClass();
     }
 
+    void Update() {
+        //Udpate healthbar value
+        HealthBarSlider.value = PC.Health;
+        HealthBarText.text = PC.Health.ToString()+"/"+PC.MaxHealth.ToString();
+
+        //Update skill value
+        float coutdown = PC.ResetSkill - Time.time;
+        if(coutdown > CharacterInfo.TimeResetSkill) Skill.fillAmount = 0;
+        else if(coutdown <=  0) Skill.fillAmount = 1;
+        else {
+           Skill.fillAmount = 1 - coutdown/CharacterInfo.TimeResetSkill;
+        }
+    }
 
     public bool ShowTargetCrosshair(Camera mainCamera,Transform playerTran, Transform _target, float radiusScan) {      
         //Check target in view of camera and in player's target distance 
