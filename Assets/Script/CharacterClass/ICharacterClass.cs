@@ -14,10 +14,7 @@ interface ICharacterClass {
 public abstract class CharacterClass : ScriptableObject, ICharacterClass {
     public WeaponType type;
     public int Health;
-    public int Stamina;
-    public int PhysicDame;
-    public int MagicDame;
-    public int Armor;
+    public int Damage;
     public int WalkSpeed;
     public int RunSpeed;
 

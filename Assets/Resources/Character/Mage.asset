@@ -15,8 +15,7 @@ MonoBehaviour:
   type: 1
   Health: 350
   Stamina: 80
-  PhysicDame: 20
-  MagicDame: 100
+  Damage: 120
   Armor: 30
   WalkSpeed: 5
   RunSpeed: 10

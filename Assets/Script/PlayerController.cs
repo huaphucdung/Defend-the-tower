@@ -41,12 +41,12 @@ public class PlayerController : MonoBehaviour
     private string _name;
     public string Name => _name;
     private PlayerState currentState;
+    public PlayerState CurrentState => currentState;
     private int _health, _maxHealth;
     
     public int Health => _health;
     public int MaxHealth => _maxHealth;
 
-    private int _stamina;
     private float _walkSpeed, _runSpeed, _currentSpped;
     private int _sensitiveMouse;
     
@@ -141,11 +141,10 @@ public class PlayerController : MonoBehaviour
 
     void Update() {
         switch (currentState) {
-            case PlayerState.Dame: 
-            
-                break;
-            case PlayerState.Stun: 
-            
+            case PlayerState.Dead:
+                if(view.IsMine) {
+                    CameraRotation();
+                }
                 break;
             default: 
                 if(view.IsMine) {
@@ -319,11 +318,12 @@ public class PlayerController : MonoBehaviour
 
     //Select Target
     void TargetCheck() {
+        _target = null;
         //Scan Enemies in radius and get first enemy
         Collider[] enemies = Physics.OverlapSphere(transform.position,radiusScan, targetLayer);
         foreach(Collider enemy in enemies) {
-            if(enemy.gameObject != gameObject) {
-                _target = enemy.transform;
+            if(enemy.gameObject.activeSelf) {
+                _target = enemy.transform; 
                 break;
             }
         }
@@ -343,7 +343,6 @@ public class PlayerController : MonoBehaviour
 
     void SetDataPlayer(CharacterClass Character){
         this._health = this._maxHealth = Character.Health;
-        this._stamina = Character.Stamina;
         this._walkSpeed = Character.WalkSpeed;
         this._runSpeed = Character.RunSpeed;
         _currentSpped = _runSpeed;
@@ -357,6 +356,19 @@ public class PlayerController : MonoBehaviour
 
     public CharacterClass GetCharacterClass() {
         return Character;
+    }
+
+    public void TakeDame(int Damage) {
+        if(currentState == PlayerState.Defense)
+            return;
+
+        _health -= Damage;
+        
+        if(_health <= 0) {
+            _health = 0;
+            Character.DoAnimation(this, animator, "Die");
+            SetState(PlayerState.Dead);
+        }
     }
 
     //Draw line or spehere to check
