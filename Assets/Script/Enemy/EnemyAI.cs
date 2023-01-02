@@ -120,6 +120,7 @@ public class EnemyAI : MonoBehaviour
         currentState = newState;
     }
 
+    [PunRPC]
     public void TakeDame(int damage) {
         _health -= damage;
 
@@ -141,6 +142,15 @@ public class EnemyAI : MonoBehaviour
                 }
             }
         }
+    }
+
+    [PunRPC]
+    public void ReBorn() {
+        _health = _maxHealth;
+        GetComponent<CapsuleCollider>().enabled = true;
+        SetState(EnemyState.Move);
+        _target = tower;
+        gameObject.SetActive(true);
     }
 
     void OnDrawGizmos() {

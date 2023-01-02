@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Photon.Pun;
 
 [CreateAssetMenu(fileName = "SwordsMan", menuName = "Character Class/SwordsMan")]
 class SwordsMan : CharacterClass {
@@ -27,21 +27,28 @@ class SwordsMan : CharacterClass {
         //Only work for Melee character
         if(combo !=2 ) {
             Collider[] hitColliders = Physics.OverlapSphere(trans.position + new Vector3(0f, 0.5f, 0f) + trans.forward / 2 , 1.5f, player.TargetLayer);
-            foreach(Collider enemy in hitColliders) {
-                EnemyAI ai = enemy.GetComponent<EnemyAI>();
-                if(ai != null) {
-                    ai.TakeDame(dame);
+            //Only Work when only my character hit enemy on my view
+            if(player.gameObject.GetComponent<PhotonView>().IsMine) {
+                foreach(Collider enemy in hitColliders) {
+                    PhotonView ai = enemy.GetComponent<PhotonView>();
+                    if(ai != null) {
+                        ai.RPC("TakeDame", RpcTarget.AllBuffered, dame);
+                    }
                 }
-            }
+            }   
+           
+            
         }
         else {
             Collider[] hitColliders = Physics.OverlapSphere(trans.position + new Vector3(0f, 0.5f, 0f), 3, player.TargetLayer);
-            foreach(Collider enemy in hitColliders) {
-                EnemyAI ai = enemy.GetComponent<EnemyAI>();
-                if(ai != null) {
-                    ai.TakeDame(dame);
+            if(player.gameObject.GetComponent<PhotonView>().IsMine) {
+                foreach(Collider enemy in hitColliders) {
+                    PhotonView ai = enemy.GetComponent<PhotonView>();
+                    if(ai != null) {
+                        ai.RPC("TakeDame", RpcTarget.AllBuffered, dame);
+                    }
                 }
-          }
+            }   
         }
     }
     

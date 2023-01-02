@@ -358,6 +358,7 @@ public class PlayerController : MonoBehaviour
         return Character;
     }
 
+    [PunRPC]
     public void TakeDame(int Damage) {
         if(currentState == PlayerState.Defense)
             return;

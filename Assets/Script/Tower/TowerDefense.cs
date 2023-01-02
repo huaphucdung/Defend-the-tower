@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class TowerDefense : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class TowerDefense : MonoBehaviour
         health = maxHealth;
     }
 
+    [PunRPC]
     public void TakeDame(int damage) {
         health -= damage;
 

@@ -79,11 +79,10 @@ public class GameObjectPool : ScriptableObject
         }
         else {
             currentObject = objectsInPool[0];
+            currentObject.gameObject.GetComponent<PhotonView>().RPC("ReBorn", RpcTarget.AllBuffered);
             objectsInPool.Remove(currentObject);
         }
-
         objectsInUse.Add(currentObject);
-        currentObject.gameObject.SetActive(true);
         NavMeshHit closestHit;
         if(NavMesh.SamplePosition(position, out closestHit, 500f, NavMesh.AllAreas))
             currentObject.gameObject.transform.position = closestHit.position;

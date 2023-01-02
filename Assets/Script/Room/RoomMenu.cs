@@ -78,6 +78,10 @@ public class RoomMenu : MonoBehaviourPunCallbacks
             }
         }
         if(count == PhotonNetwork.CurrentRoom.PlayerCount) {
+            ExitGames.Client.Photon.Hashtable RoomProperties = new ExitGames.Client.Photon.Hashtable();
+            RoomProperties["Level"] = 1;
+            RoomProperties["IsPlaying"] = true;
+            PhotonNetwork.CurrentRoom.SetCustomProperties(RoomProperties);
             PhotonNetwork.LoadLevel("GamePlay");
         }
     }

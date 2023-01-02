@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Photon.Pun;
 public class ParticleHit : MonoBehaviour
 {
     private int Damage;
@@ -16,15 +16,23 @@ public class ParticleHit : MonoBehaviour
         //Check layermask
         if((layer.value & (1 << other.gameObject.layer)) > 0) {
             if(other.GetComponent<EnemyAI>() != null) {
-                EnemyAI ai = other.GetComponent<EnemyAI>();
-                ai.TakeDame(Damage);
+                PhotonView ai = other.GetComponent<PhotonView>();
+                //Only work on master view
+                if(PhotonNetwork.IsMasterClient) {
+                    ai.RPC("TakeDame", RpcTarget.AllBuffered, Damage);
+                }
             } 
             else {
-                PlayerController PC = other.GetComponent<PlayerController>();
-                if(PC != null)  PC.TakeDame(Damage);
-                else{
-                    TowerDefense tower = other.GetComponent<TowerDefense>();
-                    tower.TakeDame(Damage);
+                PhotonView view = other.GetComponent<PhotonView>();
+                //Only work when only my view hit damage
+                if(other.tag == "Player" && view.IsMine) {
+                    view.RPC("TakeDame", RpcTarget.AllBuffered, Damage);
+                }
+                else {
+                    if(PhotonNetwork.IsMasterClient) {
+                        PhotonView tower = other.GetComponent<PhotonView>();
+                        tower.RPC("TakeDame", RpcTarget.AllBuffered, Damage);
+                    }
                 }
             }
             gameObject.SetActive(false);

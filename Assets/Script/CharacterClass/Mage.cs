@@ -19,7 +19,7 @@ public class Mage : CharacterClass
     
     public override float DoSkill(PlayerController player, Animator anim) {
         Transform trans = player.gameObject.transform;
-        particleSkill.SpawnObject(trans.position + new Vector3(0f, 2f, 0f), Quaternion.AngleAxis(30f, trans.right) * Quaternion.LookRotation(trans.forward), Damage * 2, player.TargetLayer); 
+        particleSkill.SpawnObject(trans.position + new Vector3(0f, 2f, 0f), Quaternion.AngleAxis(30f, trans.right) * Quaternion.LookRotation(trans.forward), Damage * 5, player.TargetLayer); 
         return TimeResetSkill;
     }
 }
