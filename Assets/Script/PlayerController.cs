@@ -32,6 +32,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private LayerMask targetLayer;
     [SerializeField] private float radiusScan;
 
+    [Header("Variable for revive teammates")]
+    [SerializeField] private LayerMask teamLayer;
+    [SerializeField] private float radiusRevive;
+
     public LayerMask TargetLayer => targetLayer;
 
     //Variable character class
@@ -84,7 +88,7 @@ public class PlayerController : MonoBehaviour
     private Transform _target;
 
     //New input system
-    private PlayerInput _input;
+    private NewPlayerInput _input;
 
     //Photon view
     private PhotonView view;
@@ -108,10 +112,10 @@ public class PlayerController : MonoBehaviour
         animator.avatar = Character.Avatar;
 
         //Add new input system
-        _input = new PlayerInput();
+        _input = new NewPlayerInput();
         
         //Set data player  
-        _sensitiveMouse = 10;
+        _sensitiveMouse = 25;
         
         if(!view.IsMine) {
             mainCamera.SetActive(false);
@@ -120,13 +124,12 @@ public class PlayerController : MonoBehaviour
     
         if(view.IsMine) {
             UI = FindObjectOfType<PlayerUI>();
-
             _input.Player.Attack.performed += ctx => Attack();
             _input.Player.Skill.performed += ctx => Skill();
             _input.Player.Roll.performed += ctx => Roll();
             _input.Player.Jump.performed += ctx => Jump();
             _input.Player.ChangeModeMove.performed += ctx => ChangeModeMove();
-
+            _input.Player.Rescue.performed += ctx => Rescue();
             _input.Player.Zoom.performed += ctx => Zoom(ctx.ReadValue<float>());
         }
 
@@ -150,6 +153,7 @@ public class PlayerController : MonoBehaviour
                 if(view.IsMine) {
                     Move();
                     CameraRotation();
+                    CheckPlayerAround();
                 }
                 break;
         }
@@ -233,7 +237,19 @@ public class PlayerController : MonoBehaviour
         }
         _verticalVelocity += Gravity * Time.deltaTime;
     }
-    
+
+    //Check player arount is dead
+    void CheckPlayerAround() {
+        Collider[] players = Physics.OverlapSphere(transform.position, radiusRevive, teamLayer);
+        foreach(Collider player in players) {
+            if(player.gameObject.GetComponent<PlayerController>().CurrentState == PlayerState.Dead) {
+                UI.ShowRescue(true);
+                return;
+            }
+        }
+        UI.ShowRescue(false);
+    }
+
     //Do jump
     void Jump() {
         if(_grounded && currentState == PlayerState.Idle) {
@@ -304,7 +320,7 @@ public class PlayerController : MonoBehaviour
     public void FinishRollAnim() {
         SetState(PlayerState.Idle);
     }
-
+    
     //Zoom in or out camera
     void Zoom(float value) {
         float zoom = map(value,-240f,240f,-0.3f,0.3f);
@@ -314,6 +330,16 @@ public class PlayerController : MonoBehaviour
 
     void ChangeModeMove() {
         _currentSpped = (_currentSpped == _runSpeed)? _walkSpeed : _runSpeed;
+    }
+
+    void Rescue() {
+        Collider[] players = Physics.OverlapSphere(transform.position, radiusRevive, teamLayer);
+        foreach(Collider player in players) {
+            if(player.gameObject.GetComponent<PlayerController>().CurrentState == PlayerState.Dead) {
+                player.gameObject.GetComponent<PhotonView>().RPC("Revive", RpcTarget.AllBuffered);
+                break;
+            }
+        }
     }
 
     //Select Target
@@ -360,16 +386,23 @@ public class PlayerController : MonoBehaviour
 
     [PunRPC]
     public void TakeDame(int Damage) {
-        if(currentState == PlayerState.Defense)
+        if(currentState == PlayerState.Defense && currentState == PlayerState.Dead)
             return;
 
         _health -= Damage;
         
-        if(_health <= 0) {
+        if(_health <= 0 && currentState != PlayerState.Dead) {
             _health = 0;
             Character.DoAnimation(this, animator, "Die");
             SetState(PlayerState.Dead);
         }
+    
+    }
+
+    [PunRPC]
+    public void Revive() {
+        _health = (int) (_maxHealth * 0.3f);
+        Character.DoAnimation(this, animator, "GetUp");
     }
 
     //Draw line or spehere to check

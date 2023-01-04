@@ -16,6 +16,8 @@ public class PlayerUI : MonoBehaviour
     
     [SerializeField] private Slider TowerSlider;
     [SerializeField] TowerDefense tower;
+
+    [SerializeField] private GameObject rescueImage;
     //Variable for target
     private Transform _target;
     private Vector2 defaulSize;
@@ -74,5 +76,9 @@ public class PlayerUI : MonoBehaviour
         }
         targetCrosshair.SetActive(false);
         return false;
+    }
+
+    public void ShowRescue(bool value) {
+        rescueImage.SetActive(value);
     }
 }

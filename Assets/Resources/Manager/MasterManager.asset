@@ -12,4 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5310e6f8ba2a64d4185f7e66f189034b, type: 3}
   m_Name: MasterManager
   m_EditorClassIdentifier: 
-  _gameSetting: {fileID: 11400000, guid: b28aa4c5cb924dc4797bd3ac0f3768c3, type: 2}
+  _audioSetting: {fileID: 11400000, guid: 5522fd5e206b1334fa6102056bed4a76, type: 2}
+  _screenSetting: {fileID: 11400000, guid: 1d95ac1f1bf840c48aaa4ed416643184, type: 2}
+  _mouseSetting: {fileID: 11400000, guid: 8b45c1a14595f5f4e9ba5945138da6b2, type: 2}

@@ -674,7 +674,7 @@ MonoBehaviour:
     SynchronizeType: 1
     Name: Walk
   - Type: 9
-    SynchronizeType: 1
+    SynchronizeType: 0
     Name: GetHit
   m_SynchronizeLayers:
   - SynchronizeType: 0

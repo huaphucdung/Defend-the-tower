@@ -1059,6 +1059,10 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   radiusScan: 10
+  teamLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  radiusRevive: 1
 --- !u!114 &6932779964580769451
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1144,10 +1148,10 @@ MonoBehaviour:
     SynchronizeType: 1
     Name: Jump
   - Type: 9
-    SynchronizeType: 1
+    SynchronizeType: 0
     Name: Die
   - Type: 9
-    SynchronizeType: 1
+    SynchronizeType: 0
     Name: GetUp
   - Type: 9
     SynchronizeType: 1
