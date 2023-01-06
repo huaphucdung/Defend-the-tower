@@ -19,7 +19,6 @@ public class RoomListingMenu : MonoBehaviourPunCallbacks
     }
 
     public override void OnJoinedLobby(){
-        Debug.Log("Join lobby "+ PhotonNetwork.InLobby);
     }
 
     public override void OnRoomListUpdate(List<RoomInfo> roomList) {

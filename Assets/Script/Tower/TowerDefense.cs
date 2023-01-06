@@ -8,7 +8,7 @@ public class TowerDefense : MonoBehaviour
     [SerializeField] private int maxHealth;
     
     private int health; 
-
+    private bool IsEnd = false; 
     public int MaxHealthTower => maxHealth;
     public int HealthTower => health;
     void Awake() {
@@ -19,13 +19,28 @@ public class TowerDefense : MonoBehaviour
     public void TakeDame(int damage) {
         health -= damage;
 
-        if(health <=0) {
+        if(health <=0 && !IsEnd) {
             health = 0;
-            EndGame();
+            IsEnd = true; 
+            Invoke("EndGame", 5); 
         }
     }
 
+    void Update() {
+        int playerDead = 0;
+        PlayerController[] PlayerList = FindObjectsOfType<PlayerController>();
+        foreach(PlayerController players in PlayerList){
+            if(players.CurrentState == PlayerState.Dead) playerDead++;
+        }
+
+        if(!IsEnd && playerDead == PlayerList.Length) {
+            IsEnd = true; 
+            Invoke("EndGame", 5);
+        }
+    }
+
+
     void EndGame() {
-        Debug.Log("end game");
+        PhotonNetwork.LoadLevel("Game Over");
     }
 }

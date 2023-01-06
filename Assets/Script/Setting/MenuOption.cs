@@ -4,18 +4,18 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
 using UnityEngine.UI;
-
+using UnityEngine.SceneManagement;
+using Photon.Pun;
 public class MenuOption : MonoBehaviour
 {   
     [SerializeField] private Toggle Toggle;
     [SerializeField] private TMP_Dropdown Dropdown;
     [SerializeField] private Slider AudioSlider;
     [SerializeField] private Slider MouseSensitiveSlider;
+    
 
     void OnEnable() {
         MasterManager.LoadDataSetting();
-        Debug.Log(MasterManager.ScreenSetting.resolution);
-        Debug.Log(PlayerPrefs.HasKey("Save"));
         Toggle.isOn = MasterManager.ScreenSetting.fullScreen;
         Dropdown.value = MasterManager.ScreenSetting.resolution;
 
@@ -39,8 +39,7 @@ public class MenuOption : MonoBehaviour
         
     }
 
-    public void ChangeMouseSensitiveSlider(Slider _mouseSensitiveSlider) {
-        MouseSensitiveSlider.value = _mouseSensitiveSlider.value;
+    public void ChangeMouseSensitiveSlider(Slider _mouseSensitiveSlider) { 
     }
 
     public void SetDefault() {
@@ -61,6 +60,10 @@ public class MenuOption : MonoBehaviour
         MasterManager.AudioSetting.audio = (int) AudioSlider.value;
         MasterManager.MouseSetting.sensitive = (int) MouseSensitiveSlider.value;
         MasterManager.SaveDataSetting();
+
+        foreach(PlayerController PC in FindObjectsOfType<PlayerController>()) {
+            PC.SetMouseSensitive();
+        }
     }
 
     void OnApplicationQuit() {

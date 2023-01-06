@@ -74,11 +74,11 @@ public class EnemyAI : MonoBehaviour
             if(nav.isOnNavMesh) nav.SetDestination(_target.position);
             Enemy.DoAnimation(animator,"Walk",true);
         }
-        Debug.Log(nav.isOnNavMesh);
     }
 
     void Attack() {
         if(_delayAttack <= Time.time) {
+            transform.LookAt(new Vector3(_target.position.x, transform.position.y, _target.position.z));
             Enemy.DoAnimation(animator,"Attack");
             _delayAttack = Time.time + Enemy.DelayTime;
             if(nav.isOnNavMesh) nav.SetDestination(transform.position);

@@ -52,7 +52,7 @@ public class PlayerController : MonoBehaviour
     public int MaxHealth => _maxHealth;
 
     private float _walkSpeed, _runSpeed, _currentSpped;
-    private int _sensitiveMouse;
+    private int _sensitiveMouse = 1;
     
     //Variable for camera rotation
     private Cinemachine3rdPersonFollow _3rdPerson;
@@ -89,7 +89,7 @@ public class PlayerController : MonoBehaviour
 
     //New input system
     private NewPlayerInput _input;
-
+    public NewPlayerInput Input => _input;
     //Photon view
     private PhotonView view;
 
@@ -113,9 +113,6 @@ public class PlayerController : MonoBehaviour
 
         //Add new input system
         _input = new NewPlayerInput();
-        
-        //Set data player  
-        _sensitiveMouse = 25;
         
         if(!view.IsMine) {
             mainCamera.SetActive(false);
@@ -372,6 +369,8 @@ public class PlayerController : MonoBehaviour
         this._walkSpeed = Character.WalkSpeed;
         this._runSpeed = Character.RunSpeed;
         _currentSpped = _runSpeed;
+        
+        this._sensitiveMouse = MasterManager.MouseSetting.sensitive;
 
         _resetSkill = Time.time;
     }
@@ -403,6 +402,10 @@ public class PlayerController : MonoBehaviour
     public void Revive() {
         _health = (int) (_maxHealth * 0.3f);
         Character.DoAnimation(this, animator, "GetUp");
+    }
+
+    public void SetMouseSensitive() {
+        _sensitiveMouse = MasterManager.MouseSetting.sensitive;
     }
 
     //Draw line or spehere to check
